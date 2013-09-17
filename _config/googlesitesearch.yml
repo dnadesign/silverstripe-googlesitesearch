@@ -1,0 +1,10 @@
+---
+name: googlesitesearch
+---
+GoogleSiteSearchPage:
+  create_default_search_page: true
+  cse_cx: ""
+  cse_key: ""
+Controller:
+  extensions:
+    - GoogleSiteSearchDefaultFormExtension

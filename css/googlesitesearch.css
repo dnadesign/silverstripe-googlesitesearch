@@ -1,0 +1,36 @@
+#g_cse_results {
+	position: relative;
+}
+	
+	#g_cse_results li {
+		list-style: none;
+	}
+
+	#g_cse_results .result_error,
+	#g_cse_results .result_empty {
+		display: none;
+	}
+
+#g_cse_results.results_loading {
+	min-height: 80px;
+}
+	#g_cse_results.results_loading:after {
+		content: " ";
+		height: 30px;
+		width: 30px;
+		margin: -15px 0 0 -15px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		background: #fff url(../../googlesitesearch/images/ajax-loader.gif) no-repeat;
+	}
+
+	#g_cse_results.results_loading ul,
+	#g_cse_results.results_loading h4 {
+		display: none;
+	}
+
+#g_cse_results.results_haserror .result_error,
+#g_cse_results.results_hasnoresults .result_empty {
+	display: block;
+}
