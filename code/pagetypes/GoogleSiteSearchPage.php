@@ -8,6 +8,7 @@ class GoogleSiteSearchPage extends Page {
 	public static $db = array(
 		'GoogleKey' => 'Varchar(200)',
 		'GoogleCX' => 'Varchar(200)',
+		'GoogleDomain' => 'Varchar(255)'
 	);
 
 	public function getCMSFields() {
@@ -15,7 +16,8 @@ class GoogleSiteSearchPage extends Page {
 
 		$fields->addFieldsToTab('Root.Main', array(
 			new TextField('GoogleKey', 'Google Custom Search Key (sign up at <a href="https://www.google.com/cse/sitesearch/create" target="_blank">google.com/cse</a>)'),
-			new TextField('GoogleCX', 'Google Custom Search CX')
+			new TextField('GoogleCX', 'Google Custom Search CX'),
+			new TextField('GoogleDomain', 'Domain to search results for (must be public, i.e use live URL for testing)')
 		));
 
 		return $fields;
@@ -65,7 +67,10 @@ class GoogleSiteSearchPage_Controller extends Page_Controller {
 	public function init() {
 		parent::init();
 
+		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
+		Requirements::javascript('googlesitesearch/javascript/uri.js');
 		Requirements::javascript('googlesitesearch/javascript/googlesitesearch.js');
+		
 		Requirements::css('googlesitesearch/css/googlesitesearch.css');
 
 		if(isset($_GET['Search'])) {
