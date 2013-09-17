@@ -34,4 +34,14 @@ the following:
 Ensure you read the Google Custom Search Terms before installing the module and
 agree to the terms and conditions https://www.google.co.nz/cse/docs/tos.html
 
-	
+## Customization
+
+Full HTML control is available by providing a custom `GoogleSiteSearchPage`
+template on the page. Since the results are loaded via AJAX, [John Resig's Micro Templating](http://ejohn.org/blog/javascript-micro-templating/)
+is used to provide basic utility templates in results, header and footer 
+templates.
+
+Out of the box a basic header message and pagination in the footer is provided
+but you are free to alter the page as you need to. More documentation on the
+available data to output to the template (such as file information) is at
+[developers.google.com/custom-search/v1/using_rest](https://developers.google.com/custom-search/v1/using_rest)
