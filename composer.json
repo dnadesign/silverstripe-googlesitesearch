@@ -1,5 +1,5 @@
 {
-	"name": "dnadesign/googlesitesearch",
+	"name": "dnadesign/silverstripe-googlesitesearch",
 	"description": "Add Google Site Search to your SilverStripe Site.",
 	"type": "silverstripe-module",
 	"keywords": ["silverstripe", "googlesitesearch", "search", "seo"],
