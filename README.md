@@ -19,7 +19,7 @@ from Google via ajax. The search form and results are free to style via CSS.
 3) Rebuild your database using `dev/build`
 4) Enter your Google CSE CX and key values in the CMS under a new instance of 
 the newly added GoogleSiteSearchPage or through the config flag 
-`GoogleSiteSearchPage.cse_key` and `GoogleSiteSearchPage.cse_key` respectively.
+`GoogleSiteSearchPage.cse_key` and `GoogleSiteSearchPage.cse_cx` respectively.
 
 5) Add the default search form to your controller (or use your own extension
 for styling / changing the form). In mysite/_config/googlesitesearch.yml add
