@@ -24,7 +24,7 @@ class GoogleSiteSearchDefaultFormExtension extends DataExtension {
 			$form = new Form(
 				$this, 
 				'GoogleSiteSearchForm', 
-				new FieldList(new TextField('Search')),
+				new FieldList(new TextField('Search', $formLabel)),
 				new FieldList(new FormAction('doSearch', $label))
 			);
 
