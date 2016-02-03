@@ -78,14 +78,14 @@
 							if(typeof data.queries.nextPage !== "undefined" && data.queries.nextPage.length > 0) {
 								qs.replaceQueryParam('start', data.queries.nextPage[0].startIndex);
 
-								data.nextLink = qs.toString();
+								data.nextLink = decodeURI(qs.toString());
 							}
 
 							// if there is a previous page, create a link for the previous page
 							if(typeof data.queries.previousPage !== "undefined" && data.queries.previousPage.length > 0) {
 								qs.replaceQueryParam('start', data.queries.previousPage[0].startIndex);
 
-								data.previousLink = qs.toString();
+								data.previousLink = decodeURI(qs.toString());
 							}
 
 							results.removeClass('results_loading')
