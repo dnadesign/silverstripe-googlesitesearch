@@ -22,7 +22,7 @@ class GoogleSiteSearchPage extends Page {
 
 		return $fields;
 	}
-	
+
 	public function requireDefaultRecords() {
 		if($this->config()->get('create_default_search_page')) {
 			if(GoogleSiteSearchPage::get()->count() < 1) {
@@ -30,6 +30,7 @@ class GoogleSiteSearchPage extends Page {
 				$search->Title = "Search results";
 				$search->MenuTitle = "Search";
 				$search->ShowInMenus = 0;
+				$search->ShowInSearch = 0;
 				$search->GoogleKey = $this->config()->get('cse_key');
 				$search->GoogleCX = $this->config()->get('cse_cx');
 				$search->URLSegment = "search";
@@ -38,6 +39,12 @@ class GoogleSiteSearchPage extends Page {
 				$search->doPublish('Stage', 'Live');
 			}
 		}
+	}
+
+	public function MetaTags($includeTitle = true) {
+		$tags = parent::MetaTags($includeTitle);
+		$tags.= '<meta name="robots" content="noindex">';
+		return $tags;
 	}
 
 	/**
@@ -70,13 +77,13 @@ class GoogleSiteSearchPage_Controller extends Page_Controller {
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 		Requirements::javascript('googlesitesearch/javascript/uri.js');
 		Requirements::javascript('googlesitesearch/javascript/googlesitesearch.js');
-		
+
 		Requirements::css('googlesitesearch/css/googlesitesearch.css');
 
 		if(isset($_GET['Search'])) {
             $sanitized_search_text = filter_var($_GET['Search'], FILTER_SANITIZE_STRING);
 			$this->GoogleSiteSearchText = DBField::create_field(
-				'HTMLText', 
+				'HTMLText',
 				$sanitized_search_text
 			);
 		}
