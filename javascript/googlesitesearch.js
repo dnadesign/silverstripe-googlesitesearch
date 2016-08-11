@@ -3,22 +3,22 @@
 	// John Resig - http://ejohn.org/ - MIT Licensed
 	(function(){
 	  var cache = {};
-	 
+
 	  this.tmpl = function tmpl(str, data){
 	    // Figure out if we're getting a template, or if we need to
 	    // load the template - and be sure to cache the result.
 	    var fn = !/\W/.test(str) ?
 	      cache[str] = cache[str] ||
 	        tmpl(document.getElementById(str).innerHTML) :
-	     
+
 	      // Generate a reusable function that will serve as a template
 	      // generator (and which will be cached).
 	      new Function("obj",
 	        "var p=[],print=function(){p.push.apply(p,arguments);};" +
-	       
+
 	        // Introduce the data as local variables using with(){}
 	        "with(obj){p.push('" +
-	       
+
 	        // Convert the template into pure JavaScript
 	        str
 	          .replace(/[\r\t\n]/g, " ")
@@ -29,7 +29,7 @@
 	          .split("}}").join("p.push('")
 	          .split("\r").join("\\'")
 	      + "');}return p.join('');");
-	   
+
 	    // Provide some basic currying to the user
 	    return data ? fn( data ) : fn;
 	  };
@@ -45,6 +45,11 @@
 			results.addClass('results_haserror');
 		}
 
+		function search_nosearchterm() {
+			results.removeClass('results_loading');
+			results.addClass('results_hasnosearchterm');
+		}
+
 		function search_noresults() {
 			results.removeClass('results_loading');
 			results.addClass('results_hasnoresults');
@@ -58,10 +63,12 @@
 					key = search.data('key'),
 					cx = search.data('cx'),
 					domain = search.data('domain'),
-					start = qs.getQueryParamValue('start') || 1;
+					start = qs.getQueryParamValue('start') || 1,
+					refinement = qs.getQueryParamValue('refinement'),
+					refinementString = refinement ? '%20more:' + qs.getQueryParamValue('refinement') : '';
 
 				if(qs.getQueryParamValue('Search')) {
-					var url = "https://www.googleapis.com/customsearch/v1?key="+ key +"&cx="+ cx +"&siteSearch="+ domain +"&safe=high&q="+ qs.getQueryParamValue('Search') +"&start="+ start +"&callback=?";
+					var url = "https://www.googleapis.com/customsearch/v1?key="+ key +"&cx="+ cx +"&siteSearch="+ domain +"&safe=high&q="+ qs.getQueryParamValue('Search') + refinementString + "&start="+ start +"&callback=?";
 
 					$.support.cors = true;
 					$.ajaxSetup({ cache: false });
@@ -71,21 +78,32 @@
 							return search_error();
 						}
 
-						var list = $(".result_list", results);
+						var list = $(".result_list", results),
+						    refinements = $(".result_refinements", results);
 
 						if(typeof data.items !== "undefined" && data.items.length > 0) {
 							// if there is a next page, create a link for the next page.
 							if(typeof data.queries.nextPage !== "undefined" && data.queries.nextPage.length > 0) {
 								qs.replaceQueryParam('start', data.queries.nextPage[0].startIndex);
-
 								data.nextLink = decodeURI(qs.toString());
 							}
 
 							// if there is a previous page, create a link for the previous page
 							if(typeof data.queries.previousPage !== "undefined" && data.queries.previousPage.length > 0) {
 								qs.replaceQueryParam('start', data.queries.previousPage[0].startIndex);
-
 								data.previousLink = decodeURI(qs.toString());
+							}
+
+							// if there are refinements, create links for them
+							if(typeof data.context.facets !== "undefined" && data.context.facets.length > 0) {
+
+    							$.each(data.context.facets, function(i, obj) {
+        							qs.replaceQueryParam('start', 0);
+        							qs.replaceQueryParam('refinement', obj[0].label);
+        							obj[0].link = decodeURI(qs.toString());
+        							obj[0].activeClass = (refinement == obj[0].label) ? "active" : "";
+    								refinements.append(tmpl("refinement_tmpl", obj[0]));
+    							});
 							}
 
 							results.removeClass('results_loading')
@@ -107,6 +125,8 @@
 				else {
 					search_error();
 				}
+			} else {
+    			search_nosearchterm();
 			}
 		}
 	});
