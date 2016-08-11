@@ -63,10 +63,12 @@
 					key = search.data('key'),
 					cx = search.data('cx'),
 					domain = search.data('domain'),
-					start = qs.getQueryParamValue('start') || 1;
+					start = qs.getQueryParamValue('start') || 1,
+					refinement = qs.getQueryParamValue('refinement'),
+					refinementString = refinement ? '%20more:' + qs.getQueryParamValue('refinement') : '';
 
 				if(qs.getQueryParamValue('Search')) {
-					var url = "https://www.googleapis.com/customsearch/v1?key="+ key +"&cx="+ cx +"&siteSearch="+ domain +"&safe=high&q="+ qs.getQueryParamValue('Search') +"&start="+ start +"&callback=?";
+					var url = "https://www.googleapis.com/customsearch/v1?key="+ key +"&cx="+ cx +"&siteSearch="+ domain +"&safe=high&q="+ qs.getQueryParamValue('Search') + refinementString + "&start="+ start +"&callback=?";
 
 					$.support.cors = true;
 					$.ajaxSetup({ cache: false });
@@ -76,7 +78,8 @@
 							return search_error();
 						}
 
-						var list = $(".result_list", results);
+						var list = $(".result_list", results),
+						    refinements = $(".result_refinements", results);
 
 						if(typeof data.items !== "undefined" && data.items.length > 0) {
 							// if there is a next page, create a link for the next page.
@@ -89,6 +92,18 @@
 							if(typeof data.queries.previousPage !== "undefined" && data.queries.previousPage.length > 0) {
 								qs.replaceQueryParam('start', data.queries.previousPage[0].startIndex);
 								data.previousLink = decodeURI(qs.toString());
+							}
+
+							// if there are refinements, create links for them
+							if(typeof data.context.facets !== "undefined" && data.context.facets.length > 0) {
+
+    							$.each(data.context.facets, function(i, obj) {
+        							qs.replaceQueryParam('start', 0);
+        							qs.replaceQueryParam('refinement', obj[0].label);
+        							obj[0].link = decodeURI(qs.toString());
+        							obj[0].activeClass = (refinement == obj[0].label) ? "active" : "";
+    								refinements.append(tmpl("refinement_tmpl", obj[0]));
+    							});
 							}
 
 							results.removeClass('results_loading')

@@ -4,6 +4,7 @@
 	</div>
 
 	<div id="g_cse_results" class="results_loading">
+		<ul class="result_refinements"></ul>
 		<ul class="result_list"></ul>
 
 		<div class="result_error">
@@ -27,6 +28,11 @@
 		<p class="result_meta"><a href="{{=link}}">{{=htmlFormattedUrl}}</a></p>
 		<p>{{=htmlSnippet}}</p>
 	</li>
+</script>
+
+<!-- formatting for each refinement -->
+<script type="text/html" id="refinement_tmpl">
+	<a href="{{=link}}" class="{{=activeClass}}">{{=anchor}}</a>
 </script>
 
 <!-- The pre result template is rendered before the result_list if results exist. Scope is the entire response -->
