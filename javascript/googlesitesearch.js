@@ -3,22 +3,22 @@
 	// John Resig - http://ejohn.org/ - MIT Licensed
 	(function(){
 	  var cache = {};
-	 
+
 	  this.tmpl = function tmpl(str, data){
 	    // Figure out if we're getting a template, or if we need to
 	    // load the template - and be sure to cache the result.
 	    var fn = !/\W/.test(str) ?
 	      cache[str] = cache[str] ||
 	        tmpl(document.getElementById(str).innerHTML) :
-	     
+
 	      // Generate a reusable function that will serve as a template
 	      // generator (and which will be cached).
 	      new Function("obj",
 	        "var p=[],print=function(){p.push.apply(p,arguments);};" +
-	       
+
 	        // Introduce the data as local variables using with(){}
 	        "with(obj){p.push('" +
-	       
+
 	        // Convert the template into pure JavaScript
 	        str
 	          .replace(/[\r\t\n]/g, " ")
@@ -29,7 +29,7 @@
 	          .split("}}").join("p.push('")
 	          .split("\r").join("\\'")
 	      + "');}return p.join('');");
-	   
+
 	    // Provide some basic currying to the user
 	    return data ? fn( data ) : fn;
 	  };
@@ -43,6 +43,11 @@
 		function search_error() {
 			results.removeClass('results_loading');
 			results.addClass('results_haserror');
+		}
+
+		function search_nosearchterm() {
+			results.removeClass('results_loading');
+			results.addClass('results_hasnosearchterm');
 		}
 
 		function search_noresults() {
@@ -77,14 +82,12 @@
 							// if there is a next page, create a link for the next page.
 							if(typeof data.queries.nextPage !== "undefined" && data.queries.nextPage.length > 0) {
 								qs.replaceQueryParam('start', data.queries.nextPage[0].startIndex);
-
 								data.nextLink = decodeURI(qs.toString());
 							}
 
 							// if there is a previous page, create a link for the previous page
 							if(typeof data.queries.previousPage !== "undefined" && data.queries.previousPage.length > 0) {
 								qs.replaceQueryParam('start', data.queries.previousPage[0].startIndex);
-
 								data.previousLink = decodeURI(qs.toString());
 							}
 
@@ -107,6 +110,8 @@
 				else {
 					search_error();
 				}
+			} else {
+    			search_nosearchterm();
 			}
 		}
 	});

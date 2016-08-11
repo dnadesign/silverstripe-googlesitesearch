@@ -13,6 +13,10 @@
 		<div class="result_empty">
 			<h4>No results matching that query found. Try another search keyword.</h4>
 		</div>
+
+		<div class="result_nosearchterm">
+			<h4>Enter a search term to see results.</h4>
+		</div>
 	</div>
 </div>
 
