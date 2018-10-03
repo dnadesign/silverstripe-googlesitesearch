@@ -1,12 +1,8 @@
 # Google Site Search Module
 
-## Maintainer Contact
-
-* Will Rossiter (Nickname: wrossiter, willr) <will.rossiter@dna.co.nz>
-
 ## Requirements
 
-* SilverStripe 3.1
+* SilverStripe 4
 
 ## Documentation
 
