@@ -1,10 +1,12 @@
 ---
 name: googlesitesearch
 ---
-GoogleSiteSearchPage:
+DNADesign\GoogleSiteSearch\Pages\GoogleSiteSearchPage:
   create_default_search_page: true
   cse_cx: ""
   cse_key: ""
-Controller:
+SilverStripe\CMS\Controllers\ContentController:
+  submit_button_label: 'Go'
+  input_label: 'Search'
   extensions:
-    - GoogleSiteSearchDefaultFormExtension
+    - DNADesign\GoogleSiteSearch\Extensions\GoogleSiteSearchDefaultFormExtension

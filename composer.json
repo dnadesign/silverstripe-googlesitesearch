@@ -1,7 +1,7 @@
 {
 	"name": "dnadesign/silverstripe-googlesitesearch",
 	"description": "Add Google Site Search to your SilverStripe Site.",
-	"type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
 	"keywords": ["silverstripe", "googlesitesearch", "search", "seo"],
 	"homepage": "https://github.com/dnadesign/silverstripe-googlesitesearch",
 	"license": "BSD-3-Clause",
@@ -10,9 +10,27 @@
 		"email": "will.rossiter@dna.co.nz"
 	}],
 	"require": {
-		"silverstripe/framework": ">=3.1"
+		"silverstripe/recipe-cms": "^1.0 || ^4.0",
+	    "silverstripe/vendor-plugin": "^1.0"
 	},
+    "require-dev": {
+        "phpunit/PHPUnit": "^5.7",
+        "squizlabs/php_codesniffer": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "DNADesign\\GoogleSiteSearch\\": "src/",
+            "DNADesign\\GoogleSiteSearch\\Test\\": "tests/"
+        }
+    },
 	"extra": {
-		"installer-name": "googlesitesearch"
-	}
+		"installer-name": "googlesitesearch",
+		"expose": [
+			"css",
+			"images",
+			"javascript"
+		]
+	},
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
